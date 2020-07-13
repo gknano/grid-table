@@ -17,7 +17,7 @@ export const Column: IColumnProps = function (props) {
             if (column.toRender) {
                 return column.toRender({
                     record,
-                    index: rowIndex,
+                    index: rowIndex + 1,
                     renderedData: data,
                 });
             }

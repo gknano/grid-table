@@ -7,7 +7,7 @@ import { tableSvc } from '../services/services';
 export type ITableProps<T = unknown> = FC<TableProps<T>>;
 
 export const Table: ITableProps = function (props) {
-    const { columns, data, className, children, spinner, template, ...rest } = props;
+    const { columns, data, className, children, spinner, template, isCounter, ...rest } = props;
     const isData = () => Array.isArray(data);
     const Children = () => (
         <>
@@ -40,6 +40,10 @@ export const Table: ITableProps = function (props) {
     useEffect(() => {
         tableSvc.setTableState({ template });
     }, [template]);
+
+    useEffect(() => {
+        tableSvc.setTableState({ isCounter });
+    }, [isCounter]);
 
     return (
         <div {...rest} className={`${constant.GridTable} ${className}`}>

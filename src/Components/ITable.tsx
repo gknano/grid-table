@@ -15,6 +15,7 @@ export interface ExtraTableProps {
     style?: CSSProperties;
     template?: TableTemplateType;
     spinner?: () => ReactElement | null;
+    isCounter?: boolean;
     toUpdate?: ToUpdate;
 }
 

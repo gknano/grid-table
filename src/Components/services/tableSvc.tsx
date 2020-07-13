@@ -6,6 +6,7 @@ export default class TableService<T extends any> {
         data: [],
         columns: [],
         template: 'list',
+        isCounter: false,
     };
     readonly State = new Observable<TableProps<T>>(this.initialState);
 

@@ -8,7 +8,7 @@ export type IRowProps<T = ExternalTProps> = FC<RowProps<T>>;
 
 export const Row: IRowProps = function (props) {
     const { hoverButton = null, ...rest } = props;
-    const { columns, data } = useObservable(tableSvc.State);
+    const { columns, data, isCounter } = useObservable(tableSvc.State);
     const addHoverButton = () => {
         columns.push({
             title: '',
@@ -25,6 +25,14 @@ export const Row: IRowProps = function (props) {
             ),
         });
     };
+    const addRowCounter = () => {
+        columns!.unshift({
+            title: '\u{2116}',
+            key: 'isCounter',
+            dataIndex: 'isCounter',
+            toRender: ({ index }) => <span>{index}</span>,
+        });
+    };
     useEffect(() => {
         if (hoverButton && !columns.find(el => el.key === 'hover-button')) {
             addHoverButton();
@@ -32,10 +40,16 @@ export const Row: IRowProps = function (props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [columns, hoverButton]);
+    useEffect(() => {
+        if (isCounter && !columns!.find(el => el.key === 'isCounter')) {
+            addRowCounter();
+            tableSvc.setTableState({ columns });
+        }
+    }, [columns, isCounter]);
 
-    function renderRow(record: unknown) {
+    function renderRow(record: unknown, index: number) {
         return columns.map((column, i) => (
-            <Column column={column} record={record} rowIndex={i} key={`${column.key}${i}`} />
+            <Column column={column} record={record} rowIndex={index} key={`${column.key}${i}`} />
         ));
     }
 
@@ -43,7 +57,7 @@ export const Row: IRowProps = function (props) {
         <>
             {[...data].map((record, index) => (
                 <RowWrapper record={record} index={index} {...rest}>
-                    {renderRow(record)}
+                    {renderRow(record, index)}
                 </RowWrapper>
             ))}
         </>
